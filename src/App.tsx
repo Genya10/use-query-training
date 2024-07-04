@@ -1,16 +1,21 @@
-import { useQuery } from "@tanstack/react-query";
+import { todoService } from "./services/todo.service";
 
-const todoId = 1;
 function App() {
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["todos", todoId],
-    queryFn: () =>
-      fetch("https://jsonplaceholder.typicode.com/todos/1").then((res) =>
-        res.json()
-      ),
-  });
 
-  return <div>{data ? <h1>{data.title}</h1> : <h1>Data not found</h1>}</div>;
+  const {isLoading, error, data} = todoService()
+
+  return (
+    <div>
+    {error && <div>{error.message}</div>}
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : data ? (
+        <h1>{data.data.title}</h1>
+      ) : (
+        <h1>Not found</h1>
+      )}
+    </div>
+  );
 }
 
 export default App;
