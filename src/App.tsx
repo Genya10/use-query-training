@@ -1,20 +1,24 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useTodos } from "./hooks/useTodos";
 
-const { isLoading, error, data } = useTodos();
-
 function App() {
-  const todoId = 1;
+
+  const { isLoading, error, data } = useTodos()
+
+  const queryCleint = useQueryClient()
 
   return (
-    <div>
+    <div>     
       {error && <div>{error.message}</div>}
+
+       <button onClick={()=> queryCleint.invalidateQueries(['todos'])}>Refresh</button>
 
       {isLoading ? (
         <div>Loading...</div>
       ) : data?.length ? (
-        data?.map((todo) => (
-          <div>
-            <b>{todo.id}:</b>
+        data.map((todo) => (
+          <div key={todo.id}>
+            <b>{todo.id}: </b>
             {todo.title}
           </div>
         ))
@@ -24,18 +28,4 @@ function App() {
     </div>
   );
 }
-
-/* return (
-    <div>
-    {error && <div>{error.message}</div>}
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : data ? (
-        <h1>{data?.data.title}</h1>
-      ) : (
-        <h1>Not found</h1>
-      )}
-    </div>
-  );*/
-
 export { App };

@@ -3,7 +3,7 @@ import todoService from "../services/todo.service";
 import { ITodo } from "../types/app.interface";
 
 export const useTodos = () => {
-  return useQuery<ITodo[], Error>({
+  return useQuery({
     queryKey: ["todos"],
     queryFn: () => todoService.getByAll(),
   });
