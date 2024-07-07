@@ -1,16 +1,24 @@
 import axios from "axios";
-import { ITodo } from "../types/app.interface";
+import { ICreateTodo, ITodo } from "../types/app.interface";
 
 class TodoService {
   private URL = "https://jsonplaceholder.typicode.com/todos";
 
-  async getByAll() {
-    const response = await axios.get<ITodo[]>(this.URL);
+  async getAll() {
+    const response = await axios.get<ITodo[]>(`${this.URL}/?_start=5&_limit=5`);
     return response.data;
   }
 
   async getById(id: string) {
-    axios.get<ITodo>(`${this.URL}/${id}`);
+   return axios.get<ITodo>(`${this.URL}/${id}`);
+  }
+
+  async create(title:string){
+   return axios.post<ICreateTodo>(this.URL,{
+    title,
+    userId:1,
+    completed:false
+   })
   }
 }
 
