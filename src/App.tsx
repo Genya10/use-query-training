@@ -3,7 +3,6 @@ import { useTodos } from "./hooks/useTodos";
 
 function App() {
 
-  const { isLoading, error, data } = useTodos()
 
   const queryCleint = useQueryClient()
 
