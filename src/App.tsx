@@ -1,27 +1,22 @@
-import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { useIsFetching, useQueryClient} from "@tanstack/react-query";
 import { useTodos } from "./hooks/useTodos";
 import { SyntheticEvent, useState } from "react";
-import todoService from "./services/todo.service";
+import { usePost } from "./hooks/usePost";
 
 function App() {
   const { isLoading, error, data } = useTodos();
   const [title, setTitle] = useState("");
 
-  const { mutate } = useMutation({
-    mutationKey: ["create todo"],
-    mutationFn: (title: string) => todoService.create(title),
-    onSuccess() {
-      setTitle(""), alert("Todo created!");
-    },
-    //onMutate()-означает, что мутация уже произошла
-    //onSettled()-аналог finally в try,catch
-  });
+  const countFetching = useIsFetching()//показывает кол-во активных запросов
+
+  const {mutate} = usePost()
 
   const queryClient = useQueryClient();
 
   const submitHandler = (e: SyntheticEvent) => {
     e.preventDefault();
     console.log(title);
+    setTitle('')
     mutate(title);
   };
 
@@ -34,6 +29,7 @@ function App() {
       }}
     >
       <div>
+        {!!countFetching && <h3>Is fetching...</h3>}
         <h2>Create todo:</h2>
         <form onSubmit={submitHandler}>
           <input

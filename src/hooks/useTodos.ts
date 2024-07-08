@@ -20,6 +20,7 @@ export const useTodos = () => {
     initialData(){
       return data.data
     },
+    staleTime:1000,
   });
 };
 
